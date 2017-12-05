@@ -1,0 +1,123 @@
+$main-color: rgba(146, 181, 88, 1);
+.home-page {
+  .home-leftmenu {
+    //position: fixed;
+    .school-logo {
+      img {
+        height: 160px;
+      }
+    }
+    .user-info {
+      margin: 20px 0;
+      .imgWrap{
+        height: 20px;
+        margin: 4px 6px 0 -24px;
+        position: relative;
+        width: 20px;
+      }
+      img {
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+      }
+      .user-profile-info {
+        display: inline-block;
+        margin-left: 10px;
+        max-width: 126px;
+        overflow: hidden;
+        padding-left: 0;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+    .home-leftmenu-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    ul.home-leftmenu-list {
+      list-style: none;
+      padding-left: 0px;
+      li {
+        align-items: center;
+        display: -ms-flexbox;
+        display: flex;
+        padding: 0 5px;
+        line-height: 28px;
+        position: relative;
+        z-index: 0;
+        &:hover{
+          background-color: #F6F7F9;
+        }
+        i{
+          font-size: 18px;
+        }
+        .group-icon{
+          margin-top: 4px;
+          max-height: 20px;
+          max-width: 20px;
+          position: absolute;
+          background-position: 0 -383px;
+        }
+        .group-label{
+          margin-left: 25px;
+        }
+        a {
+          color: #000;
+          &:hover {
+            text-decoration: none;
+          }
+          span{
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+  }
+  .school-profile-picture {
+    img {
+      height: 310px;
+      width: 100%;
+    }
+  }
+  .home-feed {
+    .feed {
+      .no-post{
+        margin: 20px 0px;
+      }
+      .feed-content {
+        margin-top: 20px;
+      }
+    }
+  }
+  .home-school-about{
+    .school-map{
+      img{
+        height: 100px;
+        width: 100%;
+      }
+    }
+    .school-about-detail{
+      margin: 5px 0;
+      i.fa{
+        margin-right: 10px;
+      }
+    }
+  }
+  .home-rightmenu{
+    .home-notifications{
+      .notification-detail{
+        margin-top: 5px;
+        padding-bottom: 5px;
+        border-bottom: .1rem solid rgba(0, 0, 0, 0.12);
+        &:last-of-type{
+          border-bottom: none;
+        }
+        .notification-time-user{
+          .user-profile-info{
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
+}
