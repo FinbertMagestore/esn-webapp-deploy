@@ -9,6 +9,7 @@ import {postActions, userActions} from "../../actions";
 import {userService} from "../../services";
 import {postConstants} from "../../constants";
 import PageNotFound from "../../components/commons/PageNotFound";
+import {appUtils} from "../../utils";
 
 class UserProfilePage extends Component {
     componentWillMount() {
@@ -31,31 +32,24 @@ class UserProfilePage extends Component {
 
     handleUploadCoverPhoto = (file) => {
         const {userId} = this.props;
-        userService.updateCoverPhoto(userId, file)
-            .then(
-                this.props.dispatch(userActions.getById(userId))
-            )
+        this.props.dispatch(userActions.updateCoverPhoto(userId, file))
     }
 
     handleUploadProfilePicture = (file) => {
         const {userId} = this.props;
-
-        userService.updateProfilePicture(userId, file)
-            .then(
-                this.props.dispatch(userActions.getById(userId))
-            )
+        this.props.dispatch(userActions.updateProfilePicture(userId, file))
     }
 
     render() {
-        const {user, error} = this.props
+        const {user, loading, currentUser} = this.props
         var {posts} = this.props
         posts = posts ? posts : []
-        posts = posts.sort(function (a, b) {
+        posts = (posts && posts.length > 0) && posts.sort(function (a, b) {
             return new Date(b.timeCreate) - new Date(a.timeCreate);
         });
         return (
             <div className="container">{
-                (user.id || !error) ?
+                (user && user.id) ?
                     <div>
                         <div className="col-sm-10">
                             <div className="row">
@@ -78,7 +72,7 @@ class UserProfilePage extends Component {
                             </div>
                         </div>
                     </div>
-                    : <PageNotFound/>
+                    : <PageNotFound loading={loading}/>
             }
             </div>
         )
@@ -87,12 +81,13 @@ class UserProfilePage extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     const userId = ownProps.match.params.userId
-    const {user, posts, error} = state.authentication
+    const {user, posts} = state.users
+    var loading = appUtils.checkLoading(state)
     return {
         userId,
         user,
         posts,
-        error
+        loading
     }
 }
 

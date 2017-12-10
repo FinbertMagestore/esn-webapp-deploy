@@ -4,5 +4,6 @@ export * from './defaultConstant';
 export * from './classConstants';
 export * from './eventConstants';
 export * from './postConstants';
+export * from './announcementConstants';
 //export const DOMAIN_SERVICE = 'http://localhost:3000'
 export const DOMAIN_SERVICE = 'https://esn-deploy.herokuapp.com'

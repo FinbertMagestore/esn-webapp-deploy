@@ -6,6 +6,7 @@ import {classActions} from "./classActions";
 
 export const userActions = {
     login,
+    loginById,
     logout,
     register,
     getAll,
@@ -16,6 +17,8 @@ export const userActions = {
     createClassRequest,
     deleteClassRequest,
     approveRequestJoinClass,
+    updateProfilePicture,
+    updateCoverPhoto,
 };
 
 function login(username, password) {
@@ -40,6 +43,22 @@ function login(username, password) {
     function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
 }
 
+function loginById(userId) {
+    return dispatch => {
+        dispatch(request({ userId }));
+
+        userService.getById(userId)
+            .then(
+                response => dispatch(success(response.data)),
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request(user) { return { type: userConstants.LOGINBYUSERID_REQUEST, user } }
+    function success(user) { return { type: userConstants.LOGINBYUSERID_SUCCESS, user } }
+    function failure(error) { return { type: userConstants.LOGINBYUSERID_FAILURE, error } }
+}
+
 function logout() {
     userService.logout();
     return { type: userConstants.LOGOUT };
@@ -51,8 +70,8 @@ function register(user) {
 
         userService.register(user)
             .then(
-                user => {
-                    dispatch(success());
+                response => {
+                    dispatch(success(response.data));
                     history.push('/login');
                     dispatch(alertAuthenActions.success('Registration successful'));
                 },
@@ -210,4 +229,42 @@ function approveRequestJoinClass(userId, classId) {
     function request() { return { type: userConstants.USERS_APPROVECLASSREQUEST_REQUEST } }
     function success() { return { type: userConstants.USERS_APPROVECLASSREQUEST_SUCCESS } }
     function failure(error) { return { type: userConstants.USERS_APPROVECLASSREQUEST_FAILURE, error } }
+}
+
+function updateProfilePicture(userId, file) {
+    return dispatch => {
+        dispatch(request());
+
+        userService.updateProfilePicture(userId, file)
+            .then(
+                response => {
+                    dispatch(success())
+                    dispatch(getById(userId))
+                },
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() { return { type: userConstants.USERS_UPDATEPROFILEPICTURE_REQUEST } }
+    function success() { return { type: userConstants.USERS_UPDATEPROFILEPICTURE_SUCCESS } }
+    function failure(error) { return { type: userConstants.USERS_UPDATEPROFILEPICTURE_FAILURE, error } }
+}
+
+function updateCoverPhoto(userId, file) {
+    return dispatch => {
+        dispatch(request());
+
+        userService.updateCoverPhoto(userId, file)
+            .then(
+                response => {
+                    dispatch(success())
+                    dispatch(getById(userId))
+                },
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() { return { type: userConstants.USERS_UPDATECOVERPHOTO_REQUEST } }
+    function success() { return { type: userConstants.USERS_UPDATECOVERPHOTO_SUCCESS } }
+    function failure(error) { return { type: userConstants.USERS_UPDATECOVERPHOTO_FAILURE, error } }
 }

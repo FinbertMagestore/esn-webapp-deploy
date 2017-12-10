@@ -4,23 +4,26 @@ import CreateClassModal from "../class/views/CreateClassModal";
 import CreateEventModal from "../event/views/CreateEventModal";
 import UserProfileInfo from "../commons/views/UserProfileInfo";
 import {defaultConstants} from "../../constants";
-import {classActions, eventActions} from "../../actions";
+import {announcementActions, classActions, eventActions} from "../../actions";
 import {connect} from 'react-redux';
-import {fileUtils} from "../../utils/fileUtils";
-import {userUtils} from "../../utils/userUtils";
-import {dateUtils} from "../../utils";
+import {userUtils, dateUtils, fileUtils} from "../../utils";
+import CreateAnnouncementModal from "../announcement/views/CreateAnnouncementModal";
 
 class HomeLeftmenu extends Component {
     constructor() {
         super()
         this.state = {
             modalCreateEventIsOpen: false,
-            modalCreateClassIsOpen: false
+            modalCreateClassIsOpen: false,
+            modalCreateAnnouncementIsOpen: false
         }
-        this.openModalCreateClass = this.openModalCreateClass.bind(this);
-        this.closeModalCreateClass = this.closeModalCreateClass.bind(this);
+        this.openModalCreateAnnouncement = this.openModalCreateAnnouncement.bind(this);
+        this.closeModalCreateAnnouncement = this.closeModalCreateAnnouncement.bind(this);
         this.openModalCreateEvent = this.openModalCreateEvent.bind(this);
         this.closeModalCreateEvent = this.closeModalCreateEvent.bind(this);
+        this.openModalCreateClass = this.openModalCreateClass.bind(this);
+        this.closeModalCreateClass = this.closeModalCreateClass.bind(this);
+        this.handleCreateAnnouncement = this.handleCreateAnnouncement.bind(this);
         this.handleCreateClass = this.handleCreateClass.bind(this);
         this.handleCreateEvent = this.handleCreateEvent.bind(this);
     }
@@ -41,6 +44,14 @@ class HomeLeftmenu extends Component {
         this.setState({modalCreateEventIsOpen: false});
     }
 
+    openModalCreateAnnouncement() {
+        this.setState({modalCreateAnnouncementIsOpen: true});
+    }
+
+    closeModalCreateAnnouncement() {
+        this.setState({modalCreateAnnouncementIsOpen: false});
+    }
+
     renderListItem = (index, linkTo, linkLabel) => {
         return (
             <li key={index}>
@@ -52,22 +63,28 @@ class HomeLeftmenu extends Component {
         )
     }
 
-    handleCreateClass = (userId, className, membersInvited) => {
+    handleCreateClass = (className, membersInvited) => {
+        const {currentUser} = this.props
         this.setState({modalCreateClassIsOpen: false});
-        this.props.dispatch(classActions.insert(userId, className, membersInvited));
+        this.props.dispatch(classActions.insert(currentUser.id, className, membersInvited));
+    }
+
+    handleCreateAnnouncement = (title, content) => {
+        const {currentUser} = this.props
+        this.setState({modalCreateAnnouncementIsOpen: false});
+        this.props.dispatch(announcementActions.insert(currentUser.id, title, content));
     }
 
     handleCreateEvent = (imageUpload, title, location, content, start, end) => {
         this.setState({modalCreateEventIsOpen: false});
-        const {user} = this.props
-        this.props.dispatch(eventActions.insert(null, user.id, imageUpload, title, location,
+        const {currentUser} = this.props
+        this.props.dispatch(eventActions.insert(null, currentUser.id, imageUpload, title, location,
             content, dateUtils.convertDateTimeToISO(start), dateUtils.convertDateTimeToISO(end)));
     }
 
     render() {
-        const {schoolDetail, user, classes} = this.props
-        const isTeacher = userUtils.checkIsTeacher(user)
-        const defaultImage = user && userUtils.renderSourceProfilePictureDefault(user.gender)
+        const {schoolDetail, currentUser, classes} = this.props
+        const isTeacher = userUtils.checkIsTeacher(currentUser)
         return (
             <div className="home-leftmenu clearfix">
                 <div className="row">
@@ -83,16 +100,14 @@ class HomeLeftmenu extends Component {
                             <ul className="home-leftmenu-list">
                                 <li>
                                     {
-                                        user &&
-                                        (
-                                            <span>
-                                                <Link to={`/users/${user.id}`}>
-                                                    <img src={user &&
-                                                    fileUtils.renderFileSource(user.profileImageID, defaultImage)}/>
-                                                </Link>
-                                                <UserProfileInfo user={user}/>
-                                            </span>
-                                        )
+                                        currentUser &&
+                                        <span>
+                                            <Link to={`/users/${currentUser.id}`}>
+                                                <img src={currentUser &&
+                                                fileUtils.renderFileSource(currentUser.profileImageID, defaultConstants.USER_PROFILE_PICTURE_URL_NONE)}/>
+                                            </Link>
+                                            <UserProfileInfo user={currentUser}/>
+                                        </span>
                                     }
                                 </li>
                             </ul>
@@ -156,15 +171,17 @@ class HomeLeftmenu extends Component {
                                         <a href="#" onClick={this.openModalCreateClass}>
                                             Class
                                         </a>
-                                        {
-                                            user &&
-                                            (
                                                 <CreateClassModal modalIsOpen={this.state.modalCreateClassIsOpen}
-                                                                  userId={user.id}
                                                                   closeModal={this.closeModalCreateClass}
                                                                   onSubmit={this.handleCreateClass}/>
-                                            )
-                                        }
+                                        <span role="presentation" aria-hidden="true"> · </span>
+                                        <a href="#" onClick={this.openModalCreateAnnouncement}>
+                                            Announcement
+                                        </a>
+                                                <CreateAnnouncementModal
+                                                    modalIsOpen={this.state.modalCreateAnnouncementIsOpen}
+                                                    closeModal={this.closeModalCreateAnnouncement}
+                                                    onSubmit={this.handleCreateAnnouncement}/>
                                     </span>
                                 )
                             }
@@ -177,9 +194,9 @@ class HomeLeftmenu extends Component {
 }
 
 function mapStateToProps(state) {
-    const {user} = state.authentication;
+    const {currentUser} = state.authentication;
     return {
-        user,
+        currentUser,
     };
 }
 

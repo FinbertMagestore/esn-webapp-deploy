@@ -163,7 +163,8 @@ ul.nav li .user_full_name {
         color: rgba(0, 0, 0, 0.87);
         text-overflow: ellipsis;
         overflow: hidden;
-        white-space: nowrap; }
+        white-space: nowrap;
+        word-break: break-all; }
       .files .file .file-content .file-type {
         color: rgba(0, 0, 0, 0.55); }
       .files .file .file-content .button-actions {
@@ -428,5 +429,36 @@ a.black-none-under {
     position: absolute;
     right: -1px;
     top: -1px; }
+
+#divLoading {
+  display: none; }
+
+#divLoading.show {
+  display: block;
+  position: fixed;
+  z-index: 100;
+  background-image: url("/images/loading.gif");
+  background-color: #fff;
+  opacity: 0.4;
+  background-repeat: no-repeat;
+  background-position: center;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  top: 0; }
+
+#loadinggif.show {
+  left: 50%;
+  top: 50%;
+  position: absolute;
+  z-index: 101;
+  width: 32px;
+  height: 32px;
+  margin-left: -16px;
+  margin-top: -16px; }
+
+div.content {
+  width: 1000px;
+  height: 1000px; }
 
 /*# sourceMappingURL=common.css.map */

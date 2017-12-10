@@ -37,13 +37,13 @@ class ClassCalendar extends Component {
 
     handleCreateEvent = (imageUpload, title, location, content, start, end) => {
         this.setState({modalCreateEventIsOpen: false});
-        const {user, classDetail} = this.props
-        this.props.dispatch(eventActions.insert(classDetail.id, user.id, imageUpload, title, location,
+        const {currentUser, classDetail} = this.props
+        this.props.dispatch(eventActions.insert(classDetail.id, currentUser.id, imageUpload, title, location,
             content, dateUtils.convertDateTimeToISO(start), dateUtils.convertDateTimeToISO(end)));
     }
 
     render() {
-        const {events, classId, classDetail} = this.props
+        const {events, classDetail} = this.props
         return (
             <div className="class-calendar">
                 <CreateEventModal classDetail={classDetail} closeModal={this.closeModal} modalIsOpen={this.state.modalIsOpen}
@@ -69,4 +69,11 @@ class ClassCalendar extends Component {
     }
 }
 
-export default connect(null)(ClassCalendar);
+function mapStateToProps(state) {
+    const {currentUser} = state.authentication;
+    return {
+        currentUser,
+    };
+}
+
+export default connect(mapStateToProps)(ClassCalendar);
