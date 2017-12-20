@@ -188,7 +188,7 @@ ul.nav li .user_full_name {
     height: 50px;
     float: left;
     margin-right: 10px;
-    border: 1px rgba(0, 0, 0, 0.3); }
+    border: 1px solid rgba(0, 0, 0, 0.3); }
     @media (max-width: 767px) {
       .post-detail .post-context .post-user-profile-picture {
         height: 30px;
@@ -396,9 +396,9 @@ ul.nav li .user_full_name {
     @media (min-width: 992px) {
       .new-post .new-post-content .new-post-message {
         width: 90%; } }
-  .new-post .new-post-content .announcement {
+  .new-post .new-post-content .content {
     width: 550px;
-    margin: 10px;
+    margin: 10px 0;
     max-width: 100%; }
   .new-post .new-post-content textarea {
     resize: vertical;
