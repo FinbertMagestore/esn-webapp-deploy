@@ -116,7 +116,7 @@ class Header extends Component {
                             <li className="dropdown">
                                 <a data-toggle="dropdown" className="dropdown-toggle navbar-user" href="javascript:;">
                                     <img className="img-circle"
-                                         src={currentUser && fileUtils.renderFileSource(currentUser.profileImageID, userUtils.renderSourceProfilePictureDefault(currentUser.gender))}/>
+                                         src={currentUser && userUtils.renderProfileImageOfUser(currentUser.id)}/>
                                     <span className="hidden-xs user_full_name">{currentUser.firstName} {currentUser.lastName}</span>
                                     <b className="caret"></b>
                                 </a>
@@ -143,6 +143,10 @@ class Header extends Component {
                                     <li className="divider"></li>
                                     <li>
                                         <Link to={`/events`}>Events</Link>
+                                    </li>
+                                    <li className="divider"></li>
+                                    <li>
+                                        <Link to={`/settings`}>Settings</Link>
                                     </li>
                                     <li className="divider"></li>
                                     <li>
